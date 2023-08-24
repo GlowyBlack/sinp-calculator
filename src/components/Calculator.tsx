@@ -3,13 +3,11 @@ import React, { useState } from 'react';
 type PrincipalCanadaWork = "Working in Canada" | "LMIA Job Offer" | "No Job or LMIA";
 type Education = 
     "None" |
-    "Secondary school/high school diploma" |
-    "One-year post-secondary degree" |
-    "Two-year post-secondary degree" |
-    "Three-year or longer post-secondary degree" |
-    "Two or more post-secondary degree with one being three-year or longer" |
-    "Master's level or professional degree (Medicine Veterinary Medicine Dentistry Podiatry Optometry Law Chiropractic Medicine or Pharmacy)" |
-    "Doctoral (PhD) level";
+    "Canadian certificate equivalent or a program lasting at least two semesters but less than two years" |
+    "Canadian diploma that's equivalent to studies lasting between two to less than three years" |
+    "Bachelor's degree OR a minimum of a three-year degree from a university or college" |
+    "Trade certification" |
+    "Master's or Doctorate(PhD) degree (Canadian equivalency)";
 type YesNo = "Yes" | "No";
 type LanguageScore = "Below Average" | "Average" | "Above Average" | "Excellent";
 type SecondLanguage = "Yes" | "No";
@@ -25,13 +23,11 @@ function getAgePoints(age: number): number {
 
 function getEducationPoints(education: Education): number {
     switch (education) {
-      case "Secondary school/high school diploma": return 5;
-      case "One-year post-secondary degree": return 15;
-      case "Two-year post-secondary degree": return 19;
-      case "Three-year or longer post-secondary degree": return 21;
-      case "Two or more post-secondary degree with one being three-year or longer": return 22;
-      case "Master's level or professional degree (Medicine Veterinary Medicine Dentistry Podiatry Optometry Law Chiropractic Medicine or Pharmacy)": return 23;
-      case "Doctoral (PhD) level": return 25;
+      case "Canadian certificate equivalent or a program lasting at least two semesters but less than two years": return 12;
+      case "Canadian diploma that's equivalent to studies lasting between two to less than three years": return 15;
+      case "Bachelor's degree OR a minimum of a three-year degree from a university or college": return 20;
+      case "Trade certification": return 20;
+      case "Master's or Doctorate(PhD) degree (Canadian equivalency)": return 23;
       default: return 0;
   }
 }
@@ -133,13 +129,11 @@ const Calculator: React.FC = () => {
           Education:
           <select value={education} onChange={(e) => setEducation(e.target.value as Education)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
             <option value="None">None</option>
-            <option value="Secondary school/high school diploma">Secondary school/high school diploma</option>
-            <option value="One-year post-secondary degree">One-year post-secondary degree</option>
-            <option value="Two-year post-secondary degree">Two-year post-secondary degree</option>
-            <option value="Three-year or longer post-secondary degree">Three-year or longer post-secondary degree</option>
-            <option value="Two or more post-secondary degree with one being three-year or longer">Two or more post-secondary degree with one being three-year or longer</option>
-            <option value="Master's level or professional degree (Medicine Veterinary Medicine Dentistry Podiatry Optometry Law Chiropractic Medicine or Pharmacy)">Master's level or professional degree (Medicine Veterinary Medicine Dentistry Podiatry Optometry Law Chiropractic Medicine or Pharmacy)</option>
-            <option value="Doctoral (PhD) level">Doctoral (PhD) level</option>
+            <option value="Canadian certificate equivalent or a program lasting at least two semesters but less than two years">Canadian certificate equivalent or a program lasting at least two semesters but less than two years</option>
+            <option value="Canadian diploma that's equivalent to studies lasting between two to less than three years">Canadian diploma that's equivalent to studies lasting between two to less than three years</option>
+            <option value="Bachelor's degree OR a minimum of a three-year degree from a university or college">Bachelor's degree OR a minimum of a three-year degree from a university or college</option>
+            <option value="Trade certification">Trade certification</option>
+            <option value="Master's or Doctorate(PhD) degree (Canadian equivalency)">Master's or Doctorate(PhD) degree (Canadian equivalency)</option>
           </select>
         </label>
 
