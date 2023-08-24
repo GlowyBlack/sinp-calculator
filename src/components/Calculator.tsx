@@ -15,17 +15,11 @@ type LanguageScore = "Below Average" | "Average" | "Above Average" | "Excellent"
 type SecondLanguage = "Yes" | "No";
 
 function getAgePoints(age: number): number {
-    if (age < 36 && age > 17) return 12;
-    if (age === 36) return 11;
-    if (age === 37) return 10;
-    if (age === 39) return 9;
-    if (age === 40) return 8;
-    if (age === 41) return 7;
-    if (age === 42) return 6;
-    if (age === 43) return 5;
-    if (age === 44) return 3;
-    if (age === 45) return 2;
-    if (age === 46) return 1;
+    if (age < 18) return 0;
+    if (age < 22 && age > 17) return 8;
+    if (age < 35 && age > 21) return 12;
+    if (age < 46 && age > 34) return 10;
+    if (age < 51 && age > 45) return 8;
     return 0;
 }
 
@@ -56,35 +50,27 @@ function getWorkYearsPoints(years: number): number {
 }
 
 function getAdaptabilityPoints(
-  principalCanadaWork: PrincipalCanadaWork,
+  principalCanadaWork: YesNo,
   principalPreviousStudy: YesNo,
-  spousePreviousStudy: YesNo,
-  spouseCanadaWork: YesNo,
-  spouseLanguage: YesNo,
-  canadianRelative: YesNo
+  // spousePreviousStudy: YesNo,
+  previousSaskatchewanWork: YesNo,
+  // spouseLanguage: YesNo,
+  saskatchewanRelative: YesNo
 ): number {
     let points = 0;
 
-  // Principal Canada Work Points
-  if (principalCanadaWork === "Working in Canada") points += 10;
+  //  Saskachewan Job Offer
+  if (principalCanadaWork === "Yes") points += 30;
 
   // Principal Previous Study Points
   if (principalPreviousStudy === "Yes") points += 5;
 
-  // LMIA Job Offer Points
-  if (principalCanadaWork === "LMIA Job Offer") points += 5;
+  // Previous Saskatchewan Work
+  if (previousSaskatchewanWork === "Yes") points += 5;
 
-  // Spouse Previous Study Points
-  if (spousePreviousStudy === "Yes") points += 5;
 
-  // Spouse Canada Work Points
-  if (spouseCanadaWork === "Yes") points += 5;
-
-  // Spouse Language Points
-  if (spouseLanguage === "Yes") points += 5;
-
-  // Canadian Relative Points
-  if (canadianRelative === "Yes") points += 5;
+  // Saskatechwan Relative Points
+  if (saskatchewanRelative === "Yes") points += 20;
 
   // Return the minimum between the calculated points and 10 (as per the provided formula)
   return Math.min(10, points);
@@ -108,19 +94,19 @@ const Calculator: React.FC = () => {
   const [age, setAge] = useState<number>(0);
   const [workYears, setWorkYears] = useState<number>(0);
   const [education, setEducation] = useState<Education>("None");
-  const [principalCanadaWork, setPrincipalCanadaWork] = useState<PrincipalCanadaWork>("No Job or LMIA");
+  const [principalCanadaWork, setPrincipalCanadaWork] = useState<YesNo>("No");
   const [principalPreviousStudy, setPrincipalPreviousStudy] = useState<YesNo>("No");
-  const [spousePreviousStudy, setSpousePreviousStudy] = useState<YesNo>("No");
-  const [spouseCanadaWork, setSpouseCanadaWork] = useState<YesNo>("No");
-  const [spouseLanguage, setSpouseLanguage] = useState<YesNo>("No");
-  const [canadianRelative, setCanadianRelative] = useState<YesNo>("No");
+  // const [spousePreviousStudy, setSpousePreviousStudy] = useState<YesNo>("No");
+  const [previousSaskatchewanWork, setpreviousSaskatchewanWork] = useState<YesNo>("No");
+  // const [spouseLanguage, setSpouseLanguage] = useState<YesNo>("No");
+  const [saskatchewanRelative, setCanadianRelative] = useState<YesNo>("No");
   const [languageScore, setLanguageScore] = useState<LanguageScore>("Below Average");
   const [secondLanguage, setSecondLanguage] = useState<SecondLanguage>("No");
   const [eligibilityMessage, setEligibilityMessage] = useState<string>("");
 
   const handleSubmit = () => {
-    const totalPoints = getAgePoints(age) + getWorkYearsPoints(workYears) + getWorkExperiencePoints(principalCanadaWork) + getEducationPoints(education);
-    const adaptabilityPoints = getAdaptabilityPoints(principalCanadaWork, principalPreviousStudy, spousePreviousStudy, spouseCanadaWork, spouseLanguage, canadianRelative);
+    const totalPoints = getAgePoints(age) + getWorkYearsPoints(workYears) + getEducationPoints(education);
+    const adaptabilityPoints = getAdaptabilityPoints(principalCanadaWork, principalPreviousStudy, previousSaskatchewanWork, saskatchewanRelative);
     const languagePoints = getLanguagePoints(languageScore);
     const secondLangPoints = getSecondLanguagePoints(secondLanguage);
     const finalPoints = totalPoints + adaptabilityPoints + languagePoints + secondLangPoints;
@@ -176,10 +162,9 @@ const Calculator: React.FC = () => {
         {/* Principal Canada Work Dropdown */}
         <label className="font-bold block mb-4">
           Principal Canada Work:
-          <select value={principalCanadaWork} onChange={(e) => setPrincipalCanadaWork(e.target.value as PrincipalCanadaWork)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
-            <option value="Working in Canada">Working in Canada</option>
-            <option value="LMIA Job Offer">LMIA Job Offer</option>
-            <option value="No Job or LMIA">No Job or LMIA</option>
+          <select value={principalCanadaWork} onChange={(e) => setPrincipalCanadaWork(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
+            <option value="Yes">Yes</option>
+              <option value="No">No</option>
           </select>
         </label>
 
@@ -209,17 +194,8 @@ const Calculator: React.FC = () => {
           <div>
             {/* Principal Previous Study in Canada Dropdown */}
             <label className="font-bold block mb-4">
-            Principal Previous Study in Canada:
+            Previous Study in Canada:
             <select value={principalPreviousStudy} onChange={(e) => setPrincipalPreviousStudy(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            </label>
-
-            {/* Spouse Previous Study in Canada Dropdown */}
-            <label className="font-bold block mb-4">
-            Spouse Previous Study in Canada:
-            <select value={spousePreviousStudy} onChange={(e) => setSpousePreviousStudy(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
@@ -227,17 +203,8 @@ const Calculator: React.FC = () => {
 
             {/* Spouse Canada Work Dropdown */}
             <label className="font-bold block mb-4">
-            Spouse Canada Work:
-            <select value={spouseCanadaWork} onChange={(e) => setSpouseCanadaWork(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            </label>
-
-            {/* Spouse Language Dropdown */}
-            <label className="font-bold block mb-4">
-            Spouse Language :
-            <select value={spouseLanguage} onChange={(e) => setSpouseLanguage(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
+            Previous Saskatchewan Work Experience:
+            <select value={previousSaskatchewanWork} onChange={(e) => setpreviousSaskatchewanWork(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
@@ -245,8 +212,8 @@ const Calculator: React.FC = () => {
 
             {/* Canadian Relative Dropdown */}
             <label className="font-bold block mb-4">
-            Canadian Relative:
-            <select value={canadianRelative} onChange={(e) => setCanadianRelative(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
+            Saskatchewan Relative:
+            <select value={saskatchewanRelative} onChange={(e) => setCanadianRelative(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
             </select>
