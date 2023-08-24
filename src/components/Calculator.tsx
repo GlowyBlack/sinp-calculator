@@ -150,10 +150,6 @@ const Calculator: React.FC = () => {
         </label>
 
         
-
-
-
-        
         </div>
 
         {/* Column 2 */}
@@ -161,7 +157,7 @@ const Calculator: React.FC = () => {
         <div>
         {/* Principal Canada Work Dropdown */}
         <label className="font-bold block mb-4">
-          Principal Canada Work:
+          Saskatchewan Job Offer:
           <select value={principalCanadaWork} onChange={(e) => setPrincipalCanadaWork(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
             <option value="Yes">Yes</option>
               <option value="No">No</option>
@@ -194,7 +190,7 @@ const Calculator: React.FC = () => {
           <div>
             {/* Principal Previous Study in Canada Dropdown */}
             <label className="font-bold block mb-4">
-            Previous Study in Canada:
+            Previous Study in Saskatchewan:
             <select value={principalPreviousStudy} onChange={(e) => setPrincipalPreviousStudy(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
