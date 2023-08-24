@@ -201,7 +201,7 @@ const Calculator: React.FC = () => {
             </select>
             </label>
 
-            {/* Spouse Canada Work Dropdown */}
+            {/* Previous Saskatchewan Work Experience Dropdown */}
             <label className="font-bold block mb-4">
             Previous Saskatchewan Work Experience:
             <select value={previousSaskatchewanWork} onChange={(e) => setpreviousSaskatchewanWork(e.target.value as YesNo)} className="mt-4  w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter">
